@@ -1,17 +1,25 @@
-import OpenAI from "openai";
-import dotenv from "dotenv";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+// import dotenv from "dotenv";
 
-dotenv.config();
+// dotenv.config();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-async function run(){
-const response = await openai.chat.completions.create({
-  model: "gpt-3.5-turbo",
-  messages: [{ role: "user", content: "Hello, how are you?" }],
-});
+// Use environment variable instead of hardcoding
+let GGOGLE_GEMINI_API_KEY = "AIzaSyAxDezcHE0tjn9_M-A-nusD7flE3tkeY8E"
 
-console.log(response.choices[0].message.content);
+const genAI = new GoogleGenerativeAI(GGOGLE_GEMINI_API_KEY);
+
+async function run() {
+  try {
+    // Get the model (Gemini 1.5 Flash)
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    // Ask a question
+    const result = await model.generateContent("Hello, how are you?");
+
+    console.log(result.response.text());
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
-run()
+
+run();
