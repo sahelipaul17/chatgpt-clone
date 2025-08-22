@@ -1,0 +1,1 @@
+here i have tried to create ai assistent using google generative ai for memory i used redis and for login i used couchbase .
