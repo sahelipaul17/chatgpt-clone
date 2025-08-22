@@ -1,8 +1,8 @@
 import express from "express";
 import session from "express-session";
 import bcrypt from "bcryptjs";
-import connectRedis from "connect-redis";
 import { createClient } from "redis";
+import RedisStore from 'connect-redis';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { connectCouchbase } from "./db.js";
 import cors from "cors";
@@ -109,10 +109,10 @@ const startServer = async () => {
     await redisClient.connect();
 
     // Initialize Redis store with the connected client
-    const sessionStore = new (connectRedis(session))({
+    const sessionStore = new RedisStore({
       client: redisClient,
       prefix: "sess:",
-      ttl: 86400, // 1 day in seconds
+      ttl: 86400,
       disableTouch: true
     });
     
@@ -349,6 +349,7 @@ const defineRoutes = () => {
   // Get chat history
   app.get("/api/chat/history", isAuthenticated, async (req, res) => {
     const chatKey = `${SESSION_KEY}:${req.session.user.username}`;
+    console.log("Chat key:", chatKey);
     try {
       const historyData = await redisClient.get(chatKey);
       const history = historyData ? JSON.parse(historyData) : [];
