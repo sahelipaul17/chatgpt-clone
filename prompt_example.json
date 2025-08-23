@@ -1,0 +1,268 @@
+{
+    "PROMPT_SAMPLE": [
+      {
+        "AGENT": "TESTER",
+        "TOOL": "test_case_generator",
+        "PROMPT": [
+          {
+            "feature": "Password Reset",
+            "requirements": [
+              "User must request a password reset with a registered email",
+              "System must send a reset link to the registered email",
+              "Reset link must expire in 15 minutes",
+              "New password must be at least 8 characters"
+            ],
+            "platform": "Web",
+            "data_samples": [
+              "registered_user@example.com",
+              "unregistered_user@example.com"
+            ]
+          },
+          {
+            "feature": "User Login",
+            "requirements": [
+              "Users must log in with email + password",
+              "Invalid credentials should return an error",
+              "Password must be at least 8 characters"
+            ],
+            "platform": "Web",
+            "data_samples": [
+              "valid_user@example.com / Passw0rd",
+              "wrong@example.com / badpass"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "TESTER",
+        "TOOL": "test_script_generator",
+        "PROMPT": [
+          {
+            "feature": "Login Automation",
+            "requirements": [
+              "Automate login for valid and invalid credentials",
+              "Use Playwright or Cypress",
+              "Tests should be runnable with a single command"
+            ],
+            "platform": "Frontend Automation",
+            "data_samples": [
+              "valid_user@example.com / Passw0rd",
+              "wrong@example.com / badpass"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "TESTER",
+        "TOOL": "bug_reproduction_agent",
+        "PROMPT": [
+          {
+            "feature": "Bug Report Reproduction",
+            "requirements": [
+              "Reproduce reported bug steps precisely",
+              "Include minimal setup required",
+              "Provide exact environment and logs"
+            ],
+            "platform": "Web / Backend",
+            "data_samples": [
+              "Bug: Login button not responding on Chrome",
+              "Bug: API returns 500 on POST /user"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "TESTER",
+        "TOOL": "log_analyzer_agent",
+        "PROMPT": [
+          {
+            "feature": "Log Analysis",
+            "requirements": [
+              "Summarize error patterns in logs",
+              "Cluster similar errors",
+              "Suggest next debugging steps"
+            ],
+            "platform": "Backend Services",
+            "data_samples": [
+              "Logs from service X from 10:00-11:00",
+              "Error logs for API POST /order"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "TESTER",
+        "TOOL": "api_testing_agent",
+        "PROMPT": [
+          {
+            "feature": "API Test Plan",
+            "requirements": [
+              "Generate positive and negative test cases",
+              "Include schema and performance assertions",
+              "Provide snippet for Postman/Newman or k6"
+            ],
+            "platform": "Backend API",
+            "data_samples": [
+              "GET /users",
+              "POST /login with invalid payload"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "TESTER",
+        "TOOL": "test_optimizer",
+        "PROMPT": [
+          {
+            "feature": "Optimize Test Suite",
+            "requirements": [
+              "Remove duplicate tests",
+              "Identify risk gaps",
+              "Suggest execution order for CI",
+              "Include caching hints"
+            ],
+            "platform": "CI Pipeline",
+            "data_samples": [
+              "Existing: 100 automated tests",
+              "Failure history: 10 flaky tests"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "code_review_agent",
+        "PROMPT": [
+          {
+            "feature": "Code Review",
+            "requirements": [
+              "Perform static analysis for style, correctness, security, performance",
+              "Return concise summary and categorized findings",
+              "Provide patch suggestions if applicable"
+            ],
+            "platform": "Node.js / React",
+            "data_samples": [
+              "Files changed: auth.js, login.test.js",
+              "Diff: +10 lines, -2 lines"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "unit_test_generator_agent",
+        "PROMPT": [
+          {
+            "feature": "Generate Unit Tests",
+            "requirements": [
+              "Cover edge cases and error paths",
+              "Provide runnable files",
+              "Return single command to run tests"
+            ],
+            "platform": "Jest / TypeScript",
+            "data_samples": [
+              "Function: validateEmail(email)",
+              "Function: hashPassword(password)"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "bug_fix_agent",
+        "PROMPT": [
+          {
+            "feature": "Bug Fix Proposal",
+            "requirements": [
+              "Diagnose bug from context and code",
+              "Provide safe minimal patch",
+              "List regression tests"
+            ],
+            "platform": "Node.js / React",
+            "data_samples": [
+              "Bug context: login fails on invalid email format",
+              "Code fragment: auth.js"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "refactoring_agent",
+        "PROMPT": [
+          {
+            "feature": "Refactor Function",
+            "requirements": [
+              "Improve readability and maintainability",
+              "Provide steps and patch",
+              "Include tradeoffs and rationale"
+            ],
+            "platform": "Node.js",
+            "data_samples": [
+              "Code fragment: userService.js",
+              "Goals: reduce cyclomatic complexity, improve testability"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "design_agent",
+        "PROMPT": [
+          {
+            "feature": "High-Level Design",
+            "requirements": [
+              "Provide architecture, API specs, risks",
+              "Include alternatives",
+              "Output one-pager"
+            ],
+            "platform": "System Design",
+            "data_samples": [
+              "Problem: Scalable chat application",
+              "Constraints: max 1M concurrent users"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "stack_agent",
+        "PROMPT": [
+          {
+            "feature": "Recommend Stack",
+            "requirements": [
+              "Suggest stack with rationale",
+              "Include migration notes",
+              "Consider team skill and constraints"
+            ],
+            "platform": "Web App",
+            "data_samples": [
+              "Use-case: E-commerce platform",
+              "Team skill: Node.js, React"
+            ]
+          }
+        ]
+      },
+      {
+        "AGENT": "DEVELOPER",
+        "TOOL": "documentation_agent",
+        "PROMPT": [
+          {
+            "feature": "Generate Documentation",
+            "requirements": [
+              "Provide structured docs with Markdown sections",
+              "Include Table of Contents",
+              "Include code samples if provided"
+            ],
+            "platform": "Developer Docs",
+            "data_samples": [
+              "Topic: Authentication API",
+              "Audience: Developers",
+              "Code samples: login.js, auth.js"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

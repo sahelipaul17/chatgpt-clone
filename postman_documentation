@@ -1,163 +1,208 @@
-API Documentation – ChatGPT Assistant
+ChatGPT Assistant API With AI Agents Documentation
 
-Base URL: http://localhost:5000
+Base URL: http://localhost:5000/api
 
-🔐 Authentication
-📝 Signup
+Authentication
+1. Login
 
-POST /api/signup
+Endpoint: POST /login
+Description: Authenticate user with email and password. Returns JWT token on success.
 
-Creates a new user account.
+Request Body (JSON):
 
-Request Body (JSON)
 {
-  "username": "newuser12",
-  "email": "newuser12@gmail.com",
-  "password": "test"
+    "email": "newuser123@gmail.com",
+    "password": "test"
 }
 
-Response
 
-200 OK – Signup successful
+Responses:
 
-409 Conflict – Username already exists
-
-400 Bad Request – Missing fields
-
-🔑 Login
-
-POST /api/login
-
-Authenticates a user.
-
-Request Body (JSON)
-{
-  "username": "test",
-  "password": "test"
-}
-
-Response
-
-200 OK – Login successful
+200 OK – Successfully logged in
 
 401 Unauthorized – Invalid credentials
 
-400 Bad Request – Missing fields
+2. Signup
 
-🚪 Logout
+Endpoint: POST /signup
+Description: Register a new user.
 
-POST /api/logout
+Request Body (JSON):
 
-Logs out the current user and clears session.
-
-Response
-
-200 OK – Logged out
-
-500 Server Error – Logout failed
-
-🔒 Check Auth
-
-GET /api/check-auth
-
-Checks if the user is authenticated.
-
-Response
 {
-  "authenticated": true,
-  "user": {
     "username": "test",
-    "email": "test@example.com"
-  }
+    "email": "test@gmail.com",
+    "password": "test"
 }
 
-🙍‍♂️ User
-👤 Get Current User
 
-GET /api/user
+Responses:
 
-Returns the authenticated user's data.
+201 Created – User successfully registered
 
-Response
+400 Bad Request – Invalid or missing fields
+
+Chat
+3. Send a Chat Message
+
+Endpoint: POST /chat
+Description: Send a message to the chat system.
+
+Request Body (JSON):
+
 {
-  "username": "test",
-  "email": "test@example.com",
-  "createdAt": "2025-08-22T10:00:00Z"
+    "message": "okay tell me about npm, bun and yarn? theme pref"
 }
 
-🎨 Update Theme Preference
 
-PUT /api/user/preferences
+Responses:
 
-Updates user theme preference (e.g., light/dark).
+200 OK – Returns chatbot response
 
-Request Body (JSON)
+4. Get Chat History
+
+Endpoint: GET /chat/history
+Description: Fetch the chat history for the current user.
+
+Responses:
+
+200 OK – Returns a list of previous chat messages
+
+5. Search Chat
+
+Endpoint: GET /chat/search
+Description: Search messages by keyword.
+
+Query Parameter:
+
+search – Keyword to search
+
+Example:
+GET /chat/search?search=node
+
+Responses:
+
+200 OK – Returns matching messages
+
+6. Start New Chat
+
+Endpoint: POST /chat/new
+Description: Create a new chat session.
+
+Request Body: Empty
+
+Responses:
+
+201 Created – New chat session created
+
+7. Delete Chat History
+
+Endpoint: DELETE /chat/history
+Description: Deletes all chat messages.
+
+Responses:
+
+200 OK – Chat history deleted
+
+8. Delete Particular Message
+
+Endpoint: DELETE /message/:id
+Description: Delete a specific message by ID.
+
+Path Parameter:
+
+id – Message ID to delete
+
+Example: DELETE /message/1
+
+Responses:
+
+200 OK – Message deleted
+
+404 Not Found – Message not found
+
+User Preferences
+9. Get Theme / Front Preferences
+
+Endpoint: GET /user/preferences
+Description: Fetch user preferences for theme and font.
+
+Responses:
+
+200 OK – Returns current preferences
+
+10. Update Theme / Front Preferences
+
+Endpoint: POST /user/preferences
+Description: Update user theme and font preferences.
+
+Request Body (JSON):
+
 {
-  "theme": "dark"
+    "preferences": {
+        "theme": "dark",
+        "font": "serif"
+    }
 }
 
 
-✅ Assumes you store preferences in the Couchbase user doc (extend this feature in your backend if not yet implemented).
+Responses:
 
-💬 Chat
-🧠 Send a Chat Message
+200 OK – Preferences updated
 
-POST /api/chat
+AI Agent
+11. Tester Agent: Test Case Generation
 
-Sends a message to the chatbot and receives a response. Requires authentication.
+Endpoint: POST /chat/agent/tester/test_case_generator
+Description: Generate automated test cases for a given feature.
 
-Request Body (JSON)
+Request Body (JSON):
+
 {
-  "message": "teach me about node js today"
+    "input": {
+        "feature": "Password Reset",
+        "requirements": [
+            "User must request a password reset with a registered email",
+            "System must send a reset link to the registered email",
+            "Reset link must expire in 15 minutes",
+            "New password must be at least 8 characters"
+        ],
+        "platform": "Web",
+        "data_samples": [
+            "registered_user@example.com",
+            "unregistered_user@example.com"
+        ]
+    }
 }
 
-Response
+12. Developer Agent: Stack Recommendation
+
+Endpoint: POST /agents/developer/stack_agent
+Description: Recommend technology stack based on use-case and team skill.
+
+Request Body (JSON):
+
 {
-  "reply": "Sure! Node.js is a runtime built on Chrome's V8 JavaScript engine..."
+    "input": {
+        "feature": "Recommend Stack",
+        "requirements": [
+            "Suggest stack with rationale",
+            "Include migration notes",
+            "Consider team skill and constraints"
+        ],
+        "platform": "Web App",
+        "data_samples": [
+            "Use-case: E-commerce platform",
+            "Team skill: Node.js, React"
+        ]
+    }
 }
 
-🕘 Get Chat History
+13. Agent History
 
-GET /api/chat/history
+Endpoint: GET /agents/history
+Description: Fetch history of agent requests and responses.
 
-🔧 [Not implemented in your shared code, but listed in your doc]
-You’d need to add a route to retrieve chat history from Redis (key: chat_session:<username>).
+Responses:
 
-🔎 Search Chat History
-
-GET /api/chat/search?query=node
-
-🔧 [Also not implemented in current code]
-You can implement this by querying Redis history and filtering messages containing the query string.
-
-🆕 Start New Chat Session
-
-POST /api/chat/new
-
-🔧 [Also not implemented yet]
-Could be implemented by clearing the Redis chat session key for the user.
-
-🛠️ Routes To Be Implemented (Optional Enhancements)
-Route	Method	Purpose
-/api/chat/history	GET	Retrieve full chat history
-/api/chat/search	GET	Search chat history
-/api/chat/new	POST	Start new empty chat session
-/api/user/preferences	PUT	Save user preferences (e.g., theme)
-🧪 Test Route
-
-GET /ping
-
-Check if server is running.
-
-Response
-{ "message": "pong" }
-
-🧾 Notes
-
-All chat APIs require the user to be authenticated via session.
-
-Redis is used to store chat history with keys like chat_session:<username>.
-
-Couchbase is used for user storage.
-
-Google Generative AI (gemini-1.5-flash) is used to generate responses.
+200 OK – Returns list of past agent interactions

@@ -17,7 +17,7 @@ export async function connectCouchbase() {
     }
 
     if (!bucket) {
-      bucket = cluster.bucket("users"); 
+      bucket = cluster.bucket("users");
       console.log("✅ Couchbase bucket selected: users");
     }
 
@@ -29,7 +29,12 @@ export async function connectCouchbase() {
   }
 }
 
-// Helper function to create user indexes (call this once during setup)
+// 🔹 Add this function for routes
+export async function getUsersCollection() {
+  return await connectCouchbase();
+}
+
+// Create indexes (run once)
 export async function createUserIndexes() {
   try {
     const query = `
@@ -37,25 +42,22 @@ export async function createUserIndexes() {
       CREATE INDEX idx_user_email ON users(email) WHERE type = 'user';
       CREATE INDEX idx_user_username ON users(username) WHERE type = 'user';
     `;
-    
     await cluster.query(query);
     console.log("✅ User indexes created successfully");
   } catch (error) {
-    // Indexes might already exist
-    if (!error.message.includes('already exists')) {
+    if (!error.message.includes("already exists")) {
       console.error("❌ Error creating indexes:", error);
     }
   }
 }
 
-// Helper function to get user by email
+// Query helper
 export async function getUserByEmail(email) {
   try {
     const query = `
       SELECT META().id, * FROM users 
       WHERE type = 'user' AND email = $1
     `;
-    
     const result = await cluster.query(query, [email]);
     return result.rows.length > 0 ? result.rows[0] : null;
   } catch (error) {
@@ -64,16 +66,17 @@ export async function getUserByEmail(email) {
   }
 }
 
-// Helper function to update user last login
+// Update helper
 export async function updateUserLastLogin(username) {
   try {
-    const userDoc = await collection.get(`user::${username}`);
+    const users = await getUsersCollection();
+    const userDoc = await users.get(`user::${username}`);
     const userData = userDoc.content;
-    
+
     userData.lastLogin = new Date().toISOString();
     userData.updatedAt = new Date().toISOString();
-    
-    await collection.replace(`user::${username}`, userData);
+
+    await users.replace(`user::${username}`, userData);
     return userData;
   } catch (error) {
     console.error("Error updating last login:", error);

@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\":\"test\",\n    \"password\":\"test\"\n}",
+					"raw": "{\n    \"email\":\"newuser123@gmail.com\",\n    \"password\":\"test\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -43,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"username\":\"newuser12\",\n\"email\":\"newuser12@gmail.com\",\n\"password\":\"test\"\n}",
+					"raw": "{\n\"username\":\"test\",\n\"email\":\"test@gmail.com\",\n\"password\":\"test\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,7 +72,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"message\":\"teach me about node js today\"\n}",
+					"raw": "{\n    \"message\":\"okay tell me about npm . bun and yarn?theme pref\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,19 +116,10 @@
 			"response": []
 		},
 		{
-			"name": "theme preference update",
+			"name": "theme preference get",
 			"request": {
-				"method": "PUT",
+				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"theme\":\"dark\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:5000/api/user/preferences",
 					"protocol": "http",
@@ -163,7 +154,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/chat/search?query=node",
+					"raw": "http://localhost:5000/api/chat/search?search=node",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -176,7 +167,7 @@
 					],
 					"query": [
 						{
-							"key": "query",
+							"key": "search",
 							"value": "node"
 						}
 					]
@@ -209,6 +200,176 @@
 						"api",
 						"chat",
 						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "theme or front preference update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"preferences\":{\n        \"theme\":\"dark\",\n        \"font\":\"serif\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user/preferences",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chat delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/chat/history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"chat",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chat delete for particular message",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/message/:1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"message",
+						":1"
+					],
+					"variable": [
+						{
+							"key": "1",
+							"value": "",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chat with the help of agent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"input\":{\n            \"feature\": \"Password Reset\",\n            \"requirements\": [\n                \"User must request a password reset with a registered email\",\n                \"System must send a reset link to the registered email\",\n                \"Reset link must expire in 15 minutes\",\n                \"New password must be at least 8 characters\"\n            ],\n            \"platform\": \"Web\",\n            \"data_samples\": [\n                \"registered_user@example.com\",\n                \"unregistered_user@example.com\"\n            ]\n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/chat/agent/tester/test_case_generator",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"chat",
+						"agent",
+						"tester",
+						"test_case_generator"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "agent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"input\": {\n        \"feature\": \"Recommend Stack\",\n        \"requirements\": [\n            \"Suggest stack with rationale\",\n            \"Include migration notes\",\n            \"Consider team skill and constraints\"\n        ],\n        \"platform\": \"Web App\",\n        \"data_samples\": [\n            \"Use-case: E-commerce platform\",\n            \"Team skill: Node.js, React\"\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/agents/developer/stack_agent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"agents",
+						"developer",
+						"stack_agent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "agent-history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/agents/history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"agents",
+						"history"
 					]
 				}
 			},
